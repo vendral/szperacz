@@ -21,4 +21,7 @@ def mock_files(request):
     ["test", "test.jpg", "1234.jpg"]
 ], indirect=True)
 def test_file_discovery(mock_files):
-    assert Counter(mock_files) == Counter(discover_files(get_test_data_path()))
+    actual_files = discover_files(get_test_data_path())
+
+    assert isinstance(actual_files, list)
+    assert Counter(mock_files) == Counter(actual_files)
