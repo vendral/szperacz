@@ -17,7 +17,7 @@ def mock_files(request):
 
 def filter_only_jpeg(mock_files):
     file_filter = ['jpg', 'jpeg']
-    return [file for file in mock_files if file[-3:] in file_filter ]
+    return [file for file in mock_files if file[-3:] in file_filter or file[-4:] in file_filter]
 
 
 @pytest.mark.parametrize("mock_files", [
