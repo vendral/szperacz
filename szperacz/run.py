@@ -18,4 +18,23 @@ if __name__ == '__main__':
 
     files = discover_files(path)
 
-    print(files)
+    def found(files):
+        print(f'Images found: {len(files)}\n---')
+        for i in files:
+            print(f'{i}')
+
+        return '---'
+
+
+    def not_found(files):
+        return 'Images found: 0'
+
+
+    def founded(files):
+        if len(files) > 0:
+            return found(files)
+        else:
+            return not_found(files)
+
+
+    print(founded(files))
