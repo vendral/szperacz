@@ -8,6 +8,15 @@ from tests import get_test_data_path
 TEST_RUN_ARG = '-t'
 TEST_RUN_PARAM = '--test-run'
 
+
+def log_to_console(files):
+    print(f'Images found: {len(files)}')
+    if len(files) > 0:
+        print('---')
+    for i in files:
+        print(f'{i}')
+
+
 if __name__ == '__main__':
 
     path = None
@@ -17,5 +26,4 @@ if __name__ == '__main__':
         path = get_test_data_path()
 
     files = discover_files(path)
-
-    print(files)
+    log_to_console(files)
