@@ -2,7 +2,7 @@ import os
 from collections import Counter
 from datetime import datetime
 
-from szperacz.files import discover_files
+# from szperacz.files import discover_files
 
 # region Global variables
 TEMP_DATA_PATH = 'temp_data/'
