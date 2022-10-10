@@ -2,7 +2,7 @@
 # Main repo: https://github.com/vendral/szperacz
 import sys
 
-from szperacz.files import discover_files
+from szperacz.files import FileHandler
 from tests import get_test_data_path
 
 TEST_RUN_ARG = '-t'
@@ -22,8 +22,10 @@ if __name__ == '__main__':
     path = None
     args = sys.argv[1:]
 
+    file_handler = FileHandler()
+
     if TEST_RUN_ARG in args or TEST_RUN_PARAM in args:
         path = get_test_data_path()
 
-    files = discover_files(path)
+    files = file_handler.process_files(path)
     log_to_console(files)
