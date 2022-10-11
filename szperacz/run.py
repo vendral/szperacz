@@ -5,6 +5,9 @@ import sys
 from szperacz.files import FileHandler
 from tests import get_test_data_path
 
+import json
+
+
 TEST_RUN_ARG = '-t'
 TEST_RUN_PARAM = '--test-run'
 
@@ -15,6 +18,13 @@ def log_to_console(files):
         print('---')
     for i in files:
         print(f'{i}')
+
+
+def print_to_json_file(files):
+    file = open('output.txt', 'w')
+    app = json.dumps(files)
+    print(app, file=file)
+    file.close()
 
 
 if __name__ == '__main__':
@@ -29,3 +39,4 @@ if __name__ == '__main__':
 
     files = file_handler.process_files(path)
     log_to_console(files)
+    print_to_json_file(files)
