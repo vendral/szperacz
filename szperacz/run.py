@@ -1,5 +1,6 @@
 # Szperacz 2022
 # Main repo: https://github.com/vendral/szperacz
+import json
 import sys
 
 from szperacz.files import FileHandler
@@ -17,6 +18,11 @@ def log_to_console(files):
         print(f'{i}')
 
 
+def log_to_file(files):
+    with open('data.json', 'w') as json_file:
+        json.dump(files, json_file)
+
+
 if __name__ == '__main__':
 
     path = None
@@ -29,3 +35,4 @@ if __name__ == '__main__':
 
     files = file_handler.process_files(path)
     log_to_console(files)
+    log_to_file(files)
