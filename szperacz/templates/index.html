@@ -1,0 +1,8 @@
+<p>Images found: {{ files_size }}</p>
+<p>---</p>
+<ul>
+    <li></li>
+    {% for file in files %}
+        <li><a href="#">{{ file }}</a></li>
+    {% endfor %}
+</ul>

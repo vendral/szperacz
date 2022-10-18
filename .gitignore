@@ -130,3 +130,6 @@ dmypy.json
 
 #Pycharm IDE files
 .idea/
+
+#Generated files
+szperacz/data.json
