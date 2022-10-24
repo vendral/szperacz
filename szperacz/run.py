@@ -27,7 +27,18 @@ def run_search(search_path):
 @app.route('/')
 def index():
     files = run_search(search_path)
-    return render_template('index.html', files_size=len(files), files=files)
+
+    # Update these vars in scope of SZP008
+    files_with_gps = []
+    files_with_gps_size = 0
+    file_with_id = 'Not found'
+
+    return render_template('index.html',
+                           files_size=len(files),
+                           files=files,
+                           files_with_gps_size=files_with_gps_size,
+                           files_with_gps=files_with_gps,
+                           file_with_id=file_with_id)
 # endregion
 
 

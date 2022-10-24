@@ -1,8 +1,19 @@
 <p>Images found: {{ files_size }}</p>
 <p>---</p>
 <ul>
-    <li></li>
     {% for file in files %}
         <li><a href="#">{{ file }}</a></li>
     {% endfor %}
+</ul>
+<p>Images with GPS found: {{ files_with_gps_size }}</p>
+<p>---</p>
+<ul>
+    {% for file in files_with_gps %}
+        <li><a href="#">{{ file }}</a></li>
+    {% endfor %}
+</ul>
+<p>Image for ID 7 found:</p>
+<p>---</p>
+<ul>
+    <li><a href="#">{{ file_with_id }}</a></li>
 </ul>
