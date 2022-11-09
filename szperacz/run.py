@@ -5,7 +5,7 @@ import sys
 
 from flask import Flask, render_template
 
-from files import FileHandler
+from szperacz.utils import get_files, get_files_with_gps, get_file_by_id
 from tests import get_test_data_path
 
 TEST_RUN_ARG = '-t'
@@ -18,25 +18,20 @@ app = Flask(__name__)
 search_path = None
 
 
-def run_search(search_path):
-    file_handler = FileHandler()
-    return file_handler.process_files(search_path)
-
-
 # region Routes
 @app.route('/')
 def index():
-    files = run_search(search_path)
+    # Debug magic number
+    fid = 7
 
-    # Update these vars in scope of SZP008
-    files_with_gps = []
-    files_with_gps_size = 0
-    file_with_id = 'Not found'
+    files = get_files(search_path)
+    files_with_gps = get_files_with_gps(files)
+    file_with_id = get_file_by_id(files, fid)
 
     return render_template('index.html',
                            files_size=len(files),
                            files=files,
-                           files_with_gps_size=files_with_gps_size,
+                           files_with_gps_size=len(files_with_gps),
                            files_with_gps=files_with_gps,
                            file_with_id=file_with_id)
 # endregion
