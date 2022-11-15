@@ -25,12 +25,20 @@ class FileHandler:
             data['gps_lo'] = None
             data['gps_la'] = None
 
+    def _get_datetime_data(self, data, image):
+        try:
+            data['creation_time'] = image.datetime_original
+        except AttributeError:
+            data['creation_time'] = None
+
+
     def _extract_exif(self):
         for idx, data in enumerate(self.data):
             with open(data['path'], "rb") as img:
                 image = Image(img)
                 if image.has_exif:
                     self._get_gps_data(data, image)
+                    self._get_datetime_data(data, image)
 
     def process_files(self, path=None):
         self.path = path
