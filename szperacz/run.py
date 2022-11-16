@@ -54,7 +54,7 @@ def log_to_file(files):
 
 # region UI
 def headless(search_path):
-    files = run_search(search_path)
+    files = get_files(search_path)
     log_to_console(files)
     log_to_file(files)
 
