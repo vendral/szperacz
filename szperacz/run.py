@@ -27,12 +27,16 @@ def index():
     files = get_files(search_path)
     files_with_gps = get_files_with_gps(files)
     file_with_id = get_file_by_id(files, fid)
+    files_date_options = [1, 2, 3]
+    files_dict_keys = list(files[0].keys())
 
     return render_template('index.html',
                            files_size=len(files),
                            files=files,
+                           files_dict_keys=files_dict_keys,
                            files_with_gps_size=len(files_with_gps),
                            files_with_gps=files_with_gps,
+                           files_date_options=files_date_options,
                            file_with_id=file_with_id)
 # endregion
 
