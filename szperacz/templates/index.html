@@ -7,8 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/datatables.css">
     <title>SZPERACZ ver. 0.0.0</title>
     <style>
         body {
@@ -102,19 +101,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
+                        {% for file in files %}
+                            <tr>
+                                <td>{{ file.id }}</td>
+                                <td>{{ file.path }}</td>
+                                <td>{{ file.gps_lo }}</td>
+                                <td>{{ file.gps_la }}</td>
+                                <td>{{ file.creation_time }}</td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-                <ul class="list-group">
-                    {% for file in files %}
-                        <li class="list-group-item list-group-item-action">{{ file }}</li>
-                    {% endfor %}
-                </ul>
                 <nav class="navbar navbar-light bg-dark rounded-3">
                     <div class="container-fluid">
                         <span class="navbar-brand mb-0 h1 text-white">Images with GPS found: {{ files_with_gps_size }}</span>
