@@ -5,7 +5,7 @@ import sys
 
 from flask import Flask, render_template
 
-from szperacz.utils import get_files, get_files_with_gps, get_file_by_id
+from szperacz.utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
 from tests import get_test_data_path
 
 TEST_RUN_ARG = '-t'
@@ -27,7 +27,7 @@ def index():
     files = get_files(search_path)
     files_with_gps = get_files_with_gps(files)
     file_with_id = get_file_by_id(files, fid)
-    files_date_options = [1, 2, 3]
+    files_date_options = get_creation_time(files)
     files_dict_keys = list(files[0].keys())
 
     return render_template('index.html',
