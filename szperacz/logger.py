@@ -1,19 +1,18 @@
 
 
 class Logger:
+    DEBUG = '[DEBUG]'
+    INFO = '[INFO]'
+    ERROR = '[ERROR]'
 
-    def debug(self, msg_d):
-        return print(f'{DEBUG} {msg_d}')
+    def debug(self, msg):
+        return print(f'{self.DEBUG} {msg}')
 
-    def info(self, msg_i):
-        return print(f'{INFO} {msg_i}')
+    def info(self, msg):
+        return print(f'{self.INFO} {msg}')
 
-    def error(self, msg_e):
-        return print(f'{ERROR} {msg_e}')
+    def error(self, msg):
+        return print(f'{self.ERROR} {msg}')
 
-
-DEBUG = '[DEBUG]'
-INFO = '[INFO]'
-ERROR = '[ERROR]'
 
 logger = Logger()

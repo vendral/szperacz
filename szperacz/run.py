@@ -54,12 +54,6 @@ def log_to_console(files):
         print(f'{i}')
 
 
-def receiver_creation_time(files):
-    file_date_option = []
-    for i in files:
-        file_date_option.append(i.get('creation_time'))
-    print(file_date_option)
-
 def log_to_file(files):
     with open('data.json', 'w') as json_file:
         json.dump(files, json_file)
@@ -72,7 +66,6 @@ def headless(search_path):
     files = get_files(search_path)
     log_to_console(files)
     log_to_file(files)
-    receiver_creation_time(files)
 
 
 def headful(app):
