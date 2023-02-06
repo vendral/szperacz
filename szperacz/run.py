@@ -7,6 +7,7 @@ from flask import Flask, render_template
 
 from szperacz.utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
 from tests import get_test_data_path
+from logger import logger
 
 TEST_RUN_ARG = '-t'
 TEST_RUN_PARAM = '--test-run'
@@ -43,9 +44,12 @@ def index():
 
 # region Logging
 def log_to_console(files):
+    logger.debug('Szperacz finds images')
     print(f'Images found: {len(files)}')
     if len(files) > 0:
         print('---')
+    if len(files) == 0:
+        logger.error('No images found')
     for i in files:
         print(f'{i}')
 
@@ -58,6 +62,7 @@ def log_to_file(files):
 
 # region UI
 def headless(search_path):
+    logger.info('Szperacz in headless form')
     files = get_files(search_path)
     log_to_console(files)
     log_to_file(files)
@@ -73,6 +78,7 @@ if __name__ == '__main__':
 
     args = sys.argv[1:]
 
+    logger.info('Szperacz is running')
     if TEST_RUN_ARG in args or TEST_RUN_PARAM in args:
         search_path = get_test_data_path()
 
