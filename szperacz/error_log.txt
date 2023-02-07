@@ -1,0 +1,4 @@
+[ERROR] start error
+[ERROR] console error
+[ERROR] log to file error
+[ERROR] parchacz
