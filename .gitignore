@@ -133,3 +133,4 @@ dmypy.json
 
 #Generated files
 szperacz/data.json
+szperacz/error_log.txt
