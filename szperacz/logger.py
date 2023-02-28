@@ -10,7 +10,7 @@ class Logger:
     LOG_LEVEL_ERROR = 2
 
     def __init__(self, level):
-        self.log_level = self.set_log_level(level)
+        self.set_log_level(level)
 
     def set_log_level(self, level):
         log_levels = [
@@ -44,5 +44,4 @@ class Logger:
             print(f'{self.ERROR} {msg}')
 
 
-Logger(Logger.LOG_LEVEL_DEBUG)
-logger = Logger
+logger = Logger(Logger.LOG_LEVEL_DEBUG)

@@ -132,5 +132,5 @@ dmypy.json
 .idea/
 
 #Generated files
-szperacz/data.json
-szperacz/error_log.txt
+data.json
+error_log.txt
