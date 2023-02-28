@@ -44,6 +44,7 @@ def index():
 
 # region Logging
 def log_to_console(files):
+    logger.error('console error')                     # test
     logger.debug('Szperacz finds images')
     print(f'Images found: {len(files)}')
     if len(files) > 0:
@@ -52,7 +53,6 @@ def log_to_console(files):
         logger.error('No images found')
     for i in files:
         print(f'{i}')
-
 
 def log_to_file(files):
     with open('data.json', 'w') as json_file:
@@ -64,8 +64,12 @@ def log_to_file(files):
 def headless(search_path):
     logger.info('Szperacz in headless form')
     files = get_files(search_path)
+    logger.error('start error')                      # test
     log_to_console(files)
     log_to_file(files)
+    logger.error('log to file error')                # test
+    logger.error('parchacz')                         # test
+    logger.get_log_level()
 
 
 def headful(app):
