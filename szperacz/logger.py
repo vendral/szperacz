@@ -10,17 +10,23 @@ class Logger:
     LOG_LEVEL_ERROR = 2
 
     def __init__(self, level):
-        self.log_level = level
+        self.log_level = self.set_log_level(level)
 
-    def set_log_level(self):
-        log_levels = [0, 1, 2]
-        if self.log_level in log_levels:
-            pass
+    def set_log_level(self, level):
+        log_levels = [
+            self.LOG_LEVEL_DEBUG,
+            self.LOG_LEVEL_INFO,
+            self.LOG_LEVEL_ERROR
+            ]
+
+        if level not in log_levels:
+            raise Exception(f'Expected log level {level} is out of range {log_levels}')
         else:
-            raise Exception(f'Current log level {self.log_level} is out of range "0-2"')
+            self.log_level = level
 
     def get_log_level(self):
         print(f'Logging level: {self.log_level}')
+        return self.log_level
 
     def debug(self, msg):
         if self.log_level == self.LOG_LEVEL_DEBUG:
@@ -38,5 +44,5 @@ class Logger:
             print(f'{self.ERROR} {msg}')
 
 
-logger = Logger(0)
-logger.set_log_level()
+Logger(Logger.LOG_LEVEL_DEBUG)
+logger = Logger
