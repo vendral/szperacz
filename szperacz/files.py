@@ -31,7 +31,6 @@ class FileHandler:
         except AttributeError:
             data['creation_time'] = None
 
-
     def _extract_exif(self):
         for idx, data in enumerate(self.data):
             with open(data['path'], "rb") as img:
