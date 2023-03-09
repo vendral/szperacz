@@ -1,3 +1,4 @@
+import configparser
 
 
 class Logger:
@@ -9,10 +10,14 @@ class Logger:
     LOG_LEVEL_INFO = 1
     LOG_LEVEL_ERROR = 2
 
-    def __init__(self, level):
-        self.set_log_level(level)
+    def __init__(self):
+        self.set_log_level()
 
-    def set_log_level(self, level):
+    def set_log_level(self):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        level = config.get('conf1', 'LOG_LEVEL')
+        level = int(level)
         log_levels = [
             self.LOG_LEVEL_DEBUG,
             self.LOG_LEVEL_INFO,
@@ -44,4 +49,4 @@ class Logger:
             print(f'{self.ERROR} {msg}')
 
 
-logger = Logger(Logger.LOG_LEVEL_DEBUG)
+logger = Logger()
