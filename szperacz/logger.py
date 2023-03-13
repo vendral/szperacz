@@ -16,7 +16,7 @@ class Logger:
     def set_log_level(self):
         config = configparser.ConfigParser()
         config.read('config.ini')
-        level = config.get('conf1', 'LOG_LEVEL')
+        level = config.get('Setup', 'LOG_LEVEL')
         level = int(level)
         log_levels = [
             self.LOG_LEVEL_DEBUG,
