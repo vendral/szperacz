@@ -1,38 +1,39 @@
 <!doctype html>
 <html>
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/datatables.css">
-    <title>SZPERACZ ver. 0.0.0</title>
-    <style>
-        body {
-          background-image: url('static/background_camo.png');
-        }
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="static/datatables.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+        <title>SZPERACZ ver. 0.0.0</title>
+        <style>
+            body {
+                background-image: url('static/background_camo.png');
+            }
 
-        .list-group {
-            max-height: 30em;
-            margin-bottom: 1em;
-            overflow-y:auto;
-            -webkit-overflow-scrolling: touch;
-        }
+            .list-group {
+                max-height: 30em;
+                margin-bottom: 1em;
+                overflow-y:auto;
+                -webkit-overflow-scrolling: touch;
+            }
 
-        #mapbox {
-            max-height: 50em;
-        }
-    </style>
+            #mapbox {
+                max-height: 50em;
+            }
+            </style>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#files-all').DataTable();
-        });
-    </script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
 </head>
 <body>
 
@@ -79,7 +80,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-outline-light" type="button">Filter</button>
+                            <button class="btn btn-outline-light" id="filter" type="button">Filter</button>
                         </div>
                     </div>
                 </div>
@@ -133,13 +134,44 @@
             </div>
             <div class="col-md-6">
                 <div class="p-5 mb-5 bg-dark rounded-3" id="mapbox">
-                    <div class="container-fluid">
-                        <h1 class="display-5 fw-bold text-white">Map placeholder -- to be done...></h1>
-                        <img class="img-fluid" src="static/test_map_familijna.png" alt="Order of St. Agnes">
-                    </div>
+                    <div id="map" style="height:700px; width:700px"></div>
                 </div>
             </div>
-      </div>
+        </div>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#files-all').DataTable();
+    });
+
+    var map = L.map('map').setView([53.446472, 14.474652], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var markers = []
+    var marker = L.marker([53.446472, 14.474652]).addTo(map); //Familijna 7
+
+    function getPoints(){
+        return $.ajax({
+        url: "http://localhost:5000/getPoints",
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            return data;
+        }
+        });
+    };
+
+    $('#filter').click(function(){
+        getPoints().done(function(data){
+            for (let i = 0; i < data.length; i++){
+                marker = L.marker([data[i][1], data[i][0]]).addTo(map);
+                markers.push(data[i]);
+            }
+        })
+    });
+</script>
 </html>

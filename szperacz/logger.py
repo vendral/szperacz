@@ -15,7 +15,7 @@ class Logger:
 
     def set_log_level(self):
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config.read('szperacz/config.ini')
         level = config.get('Setup', 'LOG_LEVEL')
         level = int(level)
         log_levels = [
