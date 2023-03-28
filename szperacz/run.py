@@ -4,8 +4,9 @@ import json
 import sys
 
 from flask import Flask, render_template
+from flask_cors import CORS
 
-from szperacz.utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
+from utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
 from tests import get_test_data_path
 from logger import logger
 
@@ -16,6 +17,7 @@ HEADFUL_ARG = '-h'
 HEADFUL_PARAM = '--headful'
 
 app = Flask(__name__)
+CORS(app)
 search_path = None
 
 
@@ -39,12 +41,32 @@ def index():
                            files_with_gps=files_with_gps,
                            files_date_options=files_date_options,
                            file_with_id=file_with_id)
+
+@app.route('/getPoints')
+def getPoints():
+    files = get_files(search_path)
+
+    def dms_to_long_lat(dms, dir):
+        deg = dms[0]
+        min = dms[1]
+        sec = dms[2]
+
+        return (float(deg) + float(min)/60 + float(sec)/(60*60)) * (-1 if dir in ['W', 'S'] else 1)
+
+    def get_coordinates(file):
+        gps_lo = dms_to_long_lat(file["gps_lo"], 'N')  #TODO: Get 'N' dynamically
+        gps_la = dms_to_long_lat(file["gps_la"], 'E')  #TODO: Get 'E' dynamically
+
+        return [gps_lo, gps_la]
+
+    files_long_lat = map(get_coordinates, files)
+
+    return list(files_long_lat)
 # endregion
 
 
 # region Logging
 def log_to_console(files):
-    logger.error('console error')                     # test
     logger.debug('Szperacz finds images')
     print(f'Images found: {len(files)}')
     if len(files) > 0:
@@ -64,11 +86,8 @@ def log_to_file(files):
 def headless(search_path):
     logger.info('Szperacz in headless form')
     files = get_files(search_path)
-    logger.error('start error')                      # test
     log_to_console(files)
     log_to_file(files)
-    logger.error('log to file error')                # test
-    logger.error('parchacz')                         # test
     logger.get_log_level()
 
 

@@ -1,4 +1,4 @@
-from szperacz.files import FileHandler
+from files import FileHandler
 
 
 def get_files(search_path):
@@ -29,3 +29,7 @@ def get_files_with_gps(files):
 
 def get_file_by_id(files, fid):
     return next(file for file in files if file["id"] == fid)
+
+
+def get_files_by_creation_time(files, creation_time):
+    return [file for file in files if file["creation_time"] == creation_time]
