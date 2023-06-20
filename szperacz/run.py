@@ -10,6 +10,8 @@ from utils import get_files, get_files_with_gps, get_file_by_id, get_creation_ti
 from logger import logger
 from tests import get_test_data_path
 
+from database import Database
+
 TEST_RUN_ARG = '-t'
 TEST_RUN_PARAM = '--test-run'
 
@@ -17,6 +19,7 @@ HEADFUL_ARG = '-h'
 HEADFUL_PARAM = '--headful'
 
 app = Flask(__name__)
+app_db = Database()
 CORS(app)
 search_path = None
 
@@ -75,6 +78,7 @@ def log_to_console(files):
         logger.error('No images found')
     for i in files:
         print(f'{i}')
+        app_db.update(i)
 
 def log_to_file(files):
     with open('data.json', 'w') as json_file:
@@ -85,10 +89,12 @@ def log_to_file(files):
 # region UI
 def headless(search_path):
     logger.info('Szperacz in headless form')
+    app_db.connect()
     files = get_files(search_path)
     log_to_console(files)
     log_to_file(files)
     logger.get_log_level()
+    app_db.close()
 
 
 def headful(app):
