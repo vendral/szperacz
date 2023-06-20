@@ -7,8 +7,8 @@ from flask import Flask, render_template
 from flask_cors import CORS
 
 from utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
-from tests import get_test_data_path
 from logger import logger
+from tests import get_test_data_path
 
 TEST_RUN_ARG = '-t'
 TEST_RUN_PARAM = '--test-run'
