@@ -88,6 +88,24 @@
         </div>
         <div class="row p-2">
             <div class="col-md-6">
+                <div class="p-5 mb-5 bg-dark rounded-3" id="mapbox">
+                    <div id="map" style="height:700px; width:700px"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-5 mb-5 bg-dark rounded-3" id="photo-card">
+                    <div class="card" style="height: 500; width: 700px;">
+                        <img id="photo-image" class="card-img-top" src="" alt="Photo">
+                        <div class="card-body">
+                            <h5 class="card-title">Date: </h5>
+                            <p class="card-text">Details: </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-md-6">
                 <nav class="navbar navbar-light bg-dark rounded-3">
                     <div class="container-fluid">
                         <span class="navbar-brand mb-0 h1 text-white">Images found: {{ files_size }}</span>
@@ -113,6 +131,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="col-md-6">
                 <nav class="navbar navbar-light bg-dark rounded-3">
                     <div class="container-fluid">
                         <span class="navbar-brand mb-0 h1 text-white">Images with GPS found: {{ files_with_gps_size }}</span>
@@ -123,19 +143,6 @@
                         <li class="list-group-item list-group-item-action">{{ file }}</li>
                     {% endfor %}
                 </ul>
-                <nav class="navbar navbar-light bg-dark rounded-3">
-                    <div class="container-fluid">
-                        <span class="navbar-brand mb-0 h1 text-white">Image for ID 7 found:</span>
-                    </div>
-                </nav>
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-action">{{ file_with_id }}</li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <div class="p-5 mb-5 bg-dark rounded-3" id="mapbox">
-                    <div id="map" style="height:700px; width:700px"></div>
-                </div>
             </div>
         </div>
     </div>
@@ -145,14 +152,30 @@
         $('#files-all').DataTable();
     });
 
-    var map = L.map('map').setView([53.446472, 14.474652], 13);
+    var map = L.map('map').setView([53.446472, 14.474652], 8);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    var markers = []
-    var marker = L.marker([53.446472, 14.474652]).addTo(map); //Familijna 7
+    // List of markers
+    var markers = new Array()
+
+    // Icons
+    var unselectedIcon = L.icon({
+        iconUrl: 'static/marker_unselected.png',
+
+        iconSize:     [45, 65], // size of the icon
+        iconAnchor:   [20, 65], // point of the icon which will correspond to marker's location
+    });
+
+    var selectedIcon = L.icon({
+        iconUrl: 'static/marker_selected.png',
+
+        iconSize:     [45, 65], // size of the icon
+        iconAnchor:   [20, 65], // point of the icon which will correspond to marker's location
+    });
+
 
     function getPoints(){
         return $.ajax({
@@ -168,8 +191,28 @@
     $('#filter').click(function(){
         getPoints().done(function(data){
             for (let i = 0; i < data.length; i++){
-                marker = L.marker([data[i][1], data[i][0]]).addTo(map);
-                markers.push(data[i]);
+                marker = L.marker([data[i][1], data[i][0]], {icon: unselectedIcon, id: i}).addTo(map).on('click', function(e) {
+                    // Unselect all markers
+                    for(i = 0; i < markers.length; i++) {
+                        markers[i].setIcon(unselectedIcon);
+                    }
+
+                    // Select clicked
+                    e.target.setIcon(selectedIcon)
+
+                    // POST photo update
+                    $.post("http://localhost:5000/updatePhoto",
+                    {
+                        id: e.target.options.id
+                    }, function(data) {
+                        // Update image source
+                        var source = 'static/tmp/current.jpg',
+                            timestamp = (new Date()).getTime(),
+                            newUrl = source + '?_=' + timestamp;
+                        document.getElementById("photo-image").src = newUrl;
+                    });
+                });
+                markers.push(marker);
             }
         })
     });
