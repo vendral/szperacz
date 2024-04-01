@@ -1,14 +1,18 @@
 # Szperacz 2022
 # Main repo: https://github.com/vendral/szperacz
 import json
+import os
+import shutil
 import sys
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_cors import CORS
 
 from utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
 from logger import logger
 from tests import get_test_data_path
+
+from database import Database
 
 from database import Database
 
@@ -27,12 +31,8 @@ search_path = None
 # region Routes
 @app.route('/')
 def index():
-    # Debug magic number
-    fid = 7
-
     files = get_files(search_path)
     files_with_gps = get_files_with_gps(files)
-    file_with_id = get_file_by_id(files, fid)
     files_date_options = get_creation_time(files)
     files_dict_keys = list(files[0].keys())
 
@@ -42,8 +42,7 @@ def index():
                            files_dict_keys=files_dict_keys,
                            files_with_gps_size=len(files_with_gps),
                            files_with_gps=files_with_gps,
-                           files_date_options=files_date_options,
-                           file_with_id=file_with_id)
+                           files_date_options=files_date_options)
 
 @app.route('/getPoints')
 def getPoints():
@@ -65,6 +64,22 @@ def getPoints():
     files_long_lat = map(get_coordinates, files)
 
     return list(files_long_lat)
+
+@app.route('/updatePhoto', methods=['POST'])
+def updatePhoto():
+    data = request.form
+    file = get_file_by_id(get_files(search_path), int(data["id"]))
+
+    # Get path of static/ resources
+    file_path = os.path.dirname(os.path.abspath(__file__))
+    image_path = ''
+    if sys.platform == 'win32':
+        image_path = file_path + "\\static\\tmp\\current.jpg"
+    else:
+        image_path = file_path + "/static/tmp/current.jpg"
+    shutil.copyfile(file["path"], image_path)
+
+    return file
 # endregion
 
 
