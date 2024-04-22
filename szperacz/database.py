@@ -10,6 +10,7 @@ class Database:
         self.name = "szperacz.db"
         self.connection = None
         self.cursor = None
+        self.entry = "Photos"
 
     def connect(self):
         self.connection = sqlite3.connect(self.name)
@@ -18,13 +19,18 @@ class Database:
             logger.debug(f"Database: {self.name}, connected!")
             self.cursor = self.connection.cursor()
             logger.debug(f"Database: {self.name}, cursor created!")
+            self.create(self.entry)
         # TODO: Handle no connection
 
     def close(self):
         self.connection.close()
 
     def create(self, entry):
-        logger.debug(f"Database: {self.name}, create: {entry}")
+
+        exist_tab = self.cursor.execute("SELECT name FROM sqlite_master")
+        if exist_tab.fetchone() is None:
+            self.cursor.execute("CREATE TABLE Photos(path, gps_lo, gps_la, creation_time)")
+            logger.debug(f"Database: {self.name}, create: {entry}")
 
     def read(self):
         read = None

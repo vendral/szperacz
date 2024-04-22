@@ -1,3 +1,6 @@
 pytest
 exif
 flask
+flask_cors
+pylint
+flask_sqlalchemy
