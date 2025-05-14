@@ -15,7 +15,8 @@ class FileHandler:
             self.data.append(image)
 
     def _discover_files(self):
-        self.images = [file for file in os.listdir(self.path) if file.endswith('.jpg') or file.endswith('.jpeg')]
+        self.images = [file for file in os.listdir(self.path)
+                       if file.endswith('.jpg') or file.endswith('.jpeg')]
 
     def _get_gps_data(self, data, image):
         try:

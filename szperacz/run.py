@@ -9,8 +9,10 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 
 from utils import get_files, get_files_with_gps, get_file_by_id, get_creation_time
-from tests import get_test_data_path
 from logger import logger
+from tests import get_test_data_path
+
+from database import Database
 
 from database import Database
 

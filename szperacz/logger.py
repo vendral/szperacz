@@ -15,7 +15,7 @@ class Logger:
 
     def set_log_level(self):
         config = configparser.ConfigParser()
-        config.read('szperacz/config.ini')
+        config.read('config.ini')
         level = config.get('Setup', 'LOG_LEVEL')
         level = int(level)
         log_levels = [
@@ -24,10 +24,11 @@ class Logger:
             self.LOG_LEVEL_ERROR
             ]
 
+
+        if level in log_levels:
+            self.log_level = level
         if level not in log_levels:
             raise Exception(f'Expected log level {level} is out of range {log_levels}')
-        else:
-            self.log_level = level
 
     def get_log_level(self):
         print(f'Logging level: {self.log_level}')
@@ -44,8 +45,8 @@ class Logger:
     def error(self, msg):
         if self.log_level <= self.LOG_LEVEL_ERROR:
             with open("error_log.txt", mode='a') as error_log:
-                er = f'{self.ERROR} {msg}' '\n'
-                error_log.write(er)
+                error = f'{self.ERROR} {msg}' '\n'
+                error_log.write(error)
             print(f'{self.ERROR} {msg}')
 
 
